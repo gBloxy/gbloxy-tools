@@ -14,6 +14,15 @@ copy /Y "%TOOL_NAME%.py" "%TARGET_DIR%\%TOOL_NAME%.py"
 echo @echo off > "%TARGET_DIR%\%TOOL_NAME%.bat"
 echo python "%TARGET_DIR%\%TOOL_NAME%.py" %%* >> "%TARGET_DIR%\%TOOL_NAME%.bat"
 
+:: Check if cryptography module is installed
+python -c "import cryptography" 2>NUL
+if errorlevel 1 (
+    echo Installing cryptography locally...
+    python -m pip install --user cryptography
+) else (
+    echo cryptography is already installed.
+)
+
 :: Check if target dir is in PATH
 echo %PATH% | find /I "%TARGET_DIR%" >nul
 IF ERRORLEVEL 1 (
